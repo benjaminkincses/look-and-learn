@@ -1,5 +1,7 @@
 # Look & Learn
 
+[![Made with pollinations.ai](https://raw.githubusercontent.com/pollinations/pollinations/main/packages/ui/src/brand/badge-made-with.svg)](https://pollinations.ai/?ref=badge)
+
 Point your camera at anything and learn what you see.
 
 Open the app, start the camera or upload a photo, tap "What is this?", and get a short lesson: what the object, plant, animal, place or thing is, three quick facts, and one small detail to look closer at.
