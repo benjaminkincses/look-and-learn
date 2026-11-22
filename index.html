@@ -389,26 +389,35 @@ function identify(dataUrl, key){
   .finally(function(){ $("btnAsk").disabled = false; });
 }
 
+function openSample(name){
+  var s = SAMPLES[name];
+  if (!s) return;
+  var lesson = { title: s.title, facts: s.facts.slice(), look: s.look, raw: "" };
+  renderLesson(lesson);
+  var img = new Image();
+  img.onload = function(){
+    downscale(img, false, function(dataUrl){
+      currentDataUrl = dataUrl;
+      showStageImage(dataUrl);
+      $("btnAsk").disabled = !getKey();
+      addHistory(dataUrl, lesson);
+    });
+  };
+  img.src = s.img;
+  setStatus("Sample loaded. Sign in and tap What is this? to get a live answer for this same photo.");
+  document.getElementById("result").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
 document.querySelectorAll("[data-sample]").forEach(function(fig){
   fig.addEventListener("click", function(){
-    var s = SAMPLES[fig.getAttribute("data-sample")];
-    if (!s) return;
-    var lesson = { title: s.title, facts: s.facts.slice(), look: s.look, raw: "" };
-    renderLesson(lesson);
-    var img = new Image();
-    img.onload = function(){
-      downscale(img, false, function(dataUrl){
-        currentDataUrl = dataUrl;
-        showStageImage(dataUrl);
-        $("btnAsk").disabled = !getKey();
-        addHistory(dataUrl, lesson);
-      });
-    };
-    img.src = s.img;
-    setStatus("Sample loaded. Sign in and tap What is this? to get a live answer for this same photo.");
-    document.getElementById("result").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    openSample(fig.getAttribute("data-sample"));
   });
 });
+
+if (location.hash){
+  var wanted = location.hash.replace("#sample=", "");
+  if (SAMPLES[wanted]) openSample(wanted);
+}
 
 refreshKeyStatus();
 </script>
